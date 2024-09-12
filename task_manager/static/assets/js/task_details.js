@@ -207,6 +207,10 @@ document.getElementById('edit-task-form').addEventListener('submit', handleSaveE
 document.getElementById('cancel-edit').addEventListener('click', () => {
     document.getElementById('edit-modal').style.display = 'none';
 });
+document.getElementById('cancel-button').addEventListener('click', () => {
+    document.getElementById('edit-modal').style.display = 'none';
+});
+
 
 // Initial data fetch
 fetchProjects();

@@ -110,6 +110,9 @@ document.getElementById('edit-project-form').addEventListener('submit', async (e
 document.getElementById('cancel-edit').addEventListener('click', () => {
     document.getElementById('edit-modal').style.display = 'none';
 });
+document.getElementById('cancel-button').addEventListener('click', () => {
+    document.getElementById('edit-modal').style.display = 'none';
+});
 
 async function deleteProject(id) {
     if (confirm('Are you sure you want to delete this project?')) {
