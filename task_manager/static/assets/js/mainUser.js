@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchUsers();
-
     document.getElementById('add-user-form').addEventListener('submit', async (event) => {
         event.preventDefault();
-        const username = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
+        let username = document.getElementById('username').value;
+        let email = document.getElementById('email').value;
+        username = username.replace(/\s+/g, '_');
+        email = email.replace(/\s+/g, '_');
 
         try {
             const response = await fetch('http://127.0.0.1:8000/register/', {
@@ -34,6 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchUsers() {
     try {
+        const csrfToken = getCsrfToken();
+        if (!csrfToken) {
+            console.warn('CSRF token is not available.');
+        }
         const response = await fetch('http://127.0.0.1:8000/user/all');
         if (response.ok) {
             const users = await response.json();
@@ -58,5 +63,11 @@ async function fetchUsers() {
 }
 
 function getCsrfToken() {
-    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    if (csrfMeta) {
+        return csrfMeta.getAttribute('content');
+    } else {
+        console.error('CSRF token meta tag not found');
+        return null;
+    }
 }
