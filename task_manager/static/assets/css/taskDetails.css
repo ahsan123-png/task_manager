@@ -141,6 +141,7 @@ background-color: darkred;
     font-weight: bold;
     color: white; /* Default text color */
     display: inline-block;
+    margin: auto;
 }
 
 .status.pending {
@@ -156,4 +157,29 @@ background-color: darkred;
 .status.completed {
     background-color: lightgreen;
     color: black; /* Change to black for better contrast */
+}
+
+.priority-high {
+    background-color: lightcoral;
+    color: white;
+}
+
+.priority-medium {
+    background-color: lightyellow;
+    color: black;
+}
+
+.priority-low {
+    background-color: lightgreen;
+    color: black;
+}
+
+.priority {
+    padding: 5px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    margin: -2%;
+    text-transform: uppercase;
+    font-weight: bold;
 }

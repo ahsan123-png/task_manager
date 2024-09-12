@@ -67,10 +67,15 @@ class TaskSerializer(serializers.ModelSerializer):
         if value not in valid_statuses:
             raise serializers.ValidationError(f'"{value}" is not a valid choice.')
         return value
+    def validate_priority(self, value):
+        valid_priorities = [choice[0] for choice in Task.PRIORITY_CHOICES]
+        if value not in valid_priorities:
+            raise serializers.ValidationError(f'"{value}" is not a valid choice.')
+        return value
     
 class TaskUpdateSerializer(serializers.ModelSerializer):
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())  # Handle project updates by ID
 
     class Meta:
         model = Task
-        fields = ['title', 'description', 'project', 'status']
+        fields = ['title', 'description', 'project', 'status','priority']
