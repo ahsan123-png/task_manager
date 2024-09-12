@@ -178,7 +178,30 @@
 
         .nav-links a:hover {
             color: #ff6347; /* Tomato color for hover effect */
-        }
+        }   
+            .status {
+                padding: 5px;
+                border-radius: 5px;
+                text-transform: uppercase;
+                font-weight: bold;
+                color: white; /* Default text color */
+                display: inline-block;
+            }
+        
+            .status.pending {
+                background-color: lightcoral;
+                color: white;
+            }
+        
+            .status.in_progress {
+                background-color: #ebc934;
+                color: black; /* Change to black for better contrast */
+            }
+        
+            .status.completed {
+                background-color: lightgreen;
+                color: black; /* Change to black for better contrast */
+            }
     </style>
 </head>
 <header>
@@ -304,26 +327,33 @@
                     const tasks = await response.json();
                     const taskList = document.getElementById('task-list');
                     taskList.innerHTML = '';
-    
+        
                     tasks.forEach(task => {
                         const taskItem = document.createElement('div');
                         taskItem.className = 'task-item';
+        
+                        // Create status element with appropriate class
+                        const statusElement = document.createElement('p');
+                        statusElement.className = `status ${task.status}`;
+                        statusElement.textContent = task.status.replace('_', ' '); // Replace underscore with space for display
+        
                         taskItem.innerHTML = `
                             <h3>${task.project.title}</h3>
-                            <p><small>Task : </small>${task.title}</p>
+                            <h5>Task : ${task.title}</h5>
                             <p><small>Task Description : ${task.description}</small></p>
-                            <p><small>Status : ${task.status}</small></p>
                             <p><small>Created at : ${task.created_at}</small></p>
+                            <p>${statusElement.outerHTML}</p>
                             <button class="delete-button" data-id="${task.id}">Delete</button>
                             <button class="edit-button" data-id="${task.id}">Edit</button>
                         `;
+                        
                         taskList.appendChild(taskItem);
                     });
-    
+        
                     document.querySelectorAll('.edit-button').forEach(button => {
                         button.addEventListener('click', handleEdit);
                     });
-    
+        
                     document.querySelectorAll('.delete-button').forEach(button => {
                         button.addEventListener('click', handleDelete);
                     });
@@ -334,6 +364,7 @@
                 console.error('An error occurred:', error);
             }
         }
+        
     
         async function handleSubmit(event) {
             event.preventDefault();
