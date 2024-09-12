@@ -65,18 +65,24 @@ async function fetchTasks() {
             tasks.forEach(task => {
                 const taskItem = document.createElement('div');
                 taskItem.className = 'task-item';
-
+                // Create priority element with appropriate class
+                const priorityClass = `priority-${task.priority}`;
+                const priorityIcon = task.priority === 'high' ? '🔥' : (task.priority === 'medium' ? '✨' : '✔️');
+                const priorityElement = document.createElement('p');
+                priorityElement.className = `priority ${priorityClass}`;
+                priorityElement.innerHTML = `${priorityIcon} ${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}`;
                 // Create status element with appropriate class
                 const statusElement = document.createElement('p');
                 statusElement.className = `status ${task.status}`;
                 statusElement.textContent = task.status.replace('_', ' '); // Replace underscore with space for display
 
                 taskItem.innerHTML = `
-                    <h3>${task.project.title}</h3>
-                    <h5>Task : ${task.title}</h5>
-                    <p><small>Task Description : ${task.description}</small></p>
-                    <p><small>Created at : ${task.created_at}</small></p>
+                    <h2>${task.project.title}</h2>
+                    <h4>Task : ${task.title}</h4>
+                    <p> Description : ${task.description}</p>
+                    <p>Task Assign Date : ${task.created_at}</p>
                     <p>${statusElement.outerHTML}</p>
+                    <p>${priorityElement.outerHTML}</p>
                     <button class="delete-button" data-id="${task.id}">Delete</button>
                     <button class="edit-button" data-id="${task.id}">Edit</button>
                 `;
@@ -99,12 +105,17 @@ async function fetchTasks() {
     }
 }
 
-
 async function handleSubmit(event) {
     event.preventDefault();
+    const priorityElement = document.getElementById('task-priority');
+    if (!priorityElement) {
+        console.error('Priority element not found');
+        return;
+    }
     const title = document.getElementById('task-title').value;
     const description = document.getElementById('task-description').value;
     const project = document.getElementById('task-project').value;
+    const priority = priorityElement.value;
     const status = document.getElementById('task-status').value; // Ensure this is a single string
 
     try {
@@ -114,7 +125,7 @@ async function handleSubmit(event) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             },
-            body: JSON.stringify({ title, description, project, status })
+            body: JSON.stringify({ title, description, project, status,priority })
         });
 
         if (response.ok) {
@@ -139,6 +150,7 @@ async function handleEdit(event) {
             document.getElementById('edit-task-id').value = task.id;
             document.getElementById('edit-task-title').value = task.title;
             document.getElementById('edit-task-description').value = task.description;
+            document.getElementById('edit-task-priority').value = task.priority;
             document.getElementById('edit-task-status').value = task.status;
 
             const editTaskProjectSelect = document.getElementById('edit-task-project');
@@ -159,6 +171,7 @@ async function handleSaveEdit(event) {
     const title = document.getElementById('edit-task-title').value;
     const description = document.getElementById('edit-task-description').value;
     const project = document.getElementById('edit-task-project').value;
+    const priority = document.getElementById('edit-task-priority').value;
     const status = document.getElementById('edit-task-status').value;
 
     try {
@@ -168,7 +181,7 @@ async function handleSaveEdit(event) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             },
-            body: JSON.stringify({ title, description, project, status })
+            body: JSON.stringify({ title, description, project, status,priority  })
         });
 
         if (response.ok) {
@@ -207,6 +220,10 @@ document.getElementById('edit-task-form').addEventListener('submit', handleSaveE
 document.getElementById('cancel-edit').addEventListener('click', () => {
     document.getElementById('edit-modal').style.display = 'none';
 });
+document.getElementById('cancel-button').addEventListener('click', () => {
+    document.getElementById('edit-modal').style.display = 'none';
+});
+
 
 // Initial data fetch
 fetchProjects();

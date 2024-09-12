@@ -32,21 +32,33 @@ async function fetchProjects() {
             const projectList = document.getElementById('project-list');
             projectList.innerHTML = '';
 
-            projects.forEach(project => {
+            // Iterate over each project and fetch its task count
+            for (const project of projects) {
                 const userName = project.user && project.user.username ? project.user.username : 'No user';
+
+                // Fetch task count for the current project
+                const taskCountResponse = await fetch(`http://127.0.0.1:8000/projects/${project.id}/task-count/`);
+                let taskCount = 0;
+                if (taskCountResponse.ok) {
+                    const taskCountData = await taskCountResponse.json();
+                    taskCount = taskCountData.task_count;
+                } else {
+                    console.error(`Failed to fetch task count for project ${project.id}`);
+                }
 
                 const projectItem = document.createElement('div');
                 projectItem.className = 'project-item';
                 projectItem.innerHTML = `
-                    <h3>${project.title}</h3>
+                    <h2>${project.title}</h2>
                     <p>${project.description}</p>
-                    <p><small>Assigned to: ${userName}</small></p>
-                    <p><small>Created at: ${project.created_at}</small></p>
+                    <h3>Assigned to: ${userName}</h3>
+                    <h3>Assigned Date: ${project.created_at}</h3>
+                    <h3>Number of Tasks: ${taskCount}</h3>
                     <button onclick="editProject(${project.id})">Edit</button>
                     <button class="delete-button" onclick="deleteProject(${project.id})">Delete</button>
                 `;
                 projectList.appendChild(projectItem);
-            });
+            }
         } else {
             console.error('Failed to fetch projects');
         }
@@ -54,6 +66,7 @@ async function fetchProjects() {
         console.error('An error occurred:', error);
     }
 }
+
 async function editProject(id) {
     try {
         const response = await fetch(`http://127.0.0.1:8000/projects/${id}/`);
@@ -108,6 +121,9 @@ document.getElementById('edit-project-form').addEventListener('submit', async (e
 });
 
 document.getElementById('cancel-edit').addEventListener('click', () => {
+    document.getElementById('edit-modal').style.display = 'none';
+});
+document.getElementById('cancel-button').addEventListener('click', () => {
     document.getElementById('edit-modal').style.display = 'none';
 });
 

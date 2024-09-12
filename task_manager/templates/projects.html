@@ -10,8 +10,8 @@
     <h2>Add New Project</h2>
     <form id="project-form" action="{% url "task-list-create" %}">
         {% csrf_token %}
-        <input type="text" id="project-title" placeholder="Task Title" required>
-        <textarea id="project-description" placeholder="Select Project" required></textarea>
+        <input type="text" id="project-title" placeholder="Project Title" required>
+        <textarea id="project-description" placeholder="Project Description" required></textarea>
         <select id="project-user" required></select>
         <button type="submit">Add Task</button>
     </form>
@@ -39,7 +39,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="cancel-edit">Cancel</button>
+                <button type="button" id="cancel-button">Cancel</button>
             </div>
         </div>
     </div>

@@ -13,11 +13,18 @@
         <input type="text" id="task-title" placeholder="Task Title" required>
         <textarea id="task-description" placeholder="Task Description" required></textarea>
         <select id="task-project" required></select>
-        <select id="task-status" required>
-            <option value="pending">Pending</option>
-            <option value="in_progress">In Progress</option>
-            <option value="completed">Completed</option>
-        </select>
+        <div class='container'>
+            <select id="task-status" required>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+            <select id="task-priority" name="priority" required>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </div>
         <button type="submit">Add Task</button>
     </form>
 
@@ -39,19 +46,26 @@
                     <input type="hidden" id="edit-task-id" name="id">
                     <input type="text" id="edit-task-title" name="title" placeholder="Task Title" required>
                     <textarea id="edit-task-description" name="description" placeholder="Task Description" required></textarea>
-                    <select id="edit-task-project" name="project" required>
+                    <select id="edit-task-project" name="project"  disabled>
                         <!-- Populate with project options -->
                     </select>
-                    <select id="edit-task-status" name="status" required>
-                        <option value="pending">Pending</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                    </select>
+                    <div class='container'>
+                        <select id="edit-task-status" name="status" required>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <select id="edit-task-priority" name="priority">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
                     <button type="submit">Save Changes</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="cancel-edit">Cancel</button>
+                <button type="button"  id="cancel-button">Cancel</button>
             </div>
         </div>
     </div>
