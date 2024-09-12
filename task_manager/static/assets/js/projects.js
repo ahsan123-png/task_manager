@@ -38,10 +38,10 @@ async function fetchProjects() {
                 const projectItem = document.createElement('div');
                 projectItem.className = 'project-item';
                 projectItem.innerHTML = `
-                    <h3>${project.title}</h3>
+                    <h2>${project.title}</h2>
                     <p>${project.description}</p>
-                    <p><small>Assigned to: ${userName}</small></p>
-                    <p><small>Created at: ${project.created_at}</small></p>
+                    <h3>Assigned to: ${userName}<h3>
+                    <h3>Assigned Date: ${project.created_at}</h3>
                     <button onclick="editProject(${project.id})">Edit</button>
                     <button class="delete-button" onclick="deleteProject(${project.id})">Delete</button>
                 `;
