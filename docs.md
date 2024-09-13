@@ -11,10 +11,7 @@
     provided and not empty, checks if the username already exists in the database, creates a new User
     object if the username is unique, and returns a success message with status code 201 if successful.
     """
-
-
-
-        """
+    """
     The function `project_list_create` is a Django REST framework view that handles GET and POST
     requests for listing and creating projects respectively.
     
@@ -25,8 +22,7 @@
     :return: The `project_list_create` function is a Django REST framework view that handles both GET
     and POST requests for a list of projects.
     """
-
-        """
+    """
     This function retrieves a list of all users from the database and serializes the data to be returned
     in a response.
     

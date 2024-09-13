@@ -7,17 +7,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response 
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from .models import *
-# The line `from .serializers import *` is importing all the classes and functions defined in the
-# `serializers.py` file located in the same directory as the current Python script. This allows you to
-# use those serializers directly in the current script without having to specify the module name each
-# time.
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import render
-from rest_framework.parsers import JSONParser
-# from rest_framework.permissions import IsAuthenticated
 # ============= views ==============
 #create User
 @csrf_exempt
