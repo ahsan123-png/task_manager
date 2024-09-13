@@ -65,7 +65,6 @@ def project_list_create(request):
         projects = Project.objects.all()
         serializer = ProjectDetailSerializer(projects, many=True)
         return Response(serializer.data)
-
     elif request.method == 'POST':
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
@@ -90,39 +89,31 @@ def project_detail(request, pk):
     elif request.method == 'PUT':
         data = request.data  # No need to use JSONParser here
         serializer = ProjectUpdateSerializer(project, data=data, partial=True)  # Partial update
-
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        
-        print("Serializer errors:", serializer.errors)
+            return Response(serializer.data)  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET', 'POST'])
 def task_list_create(request):
     if request.method == 'GET':
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
-    
     elif request.method == 'POST':
         serializer = TaskUpdateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET', 'PUT', 'DELETE'])
 def task_detail(request, pk):
     task = get_object_or_404(Task, pk=pk)
-
     if request.method == 'GET':
         serializer = TaskSerializer(task)
         return Response(serializer.data)
-    
     elif request.method == 'PUT':
         serializer = TaskUpdateSerializer(task, data=request.data, partial=True)
         if serializer.is_valid():
@@ -130,80 +121,17 @@ def task_detail(request, pk):
             return Response(serializer.data)
         print("Serializer errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
     elif request.method == 'DELETE':
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET'])
 def project_task_count(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     task_count = project.tasks.count()
     return Response({'project': project.title, 'task_count': task_count})
-
-
-
-
-
-
-# Task CRUD - List and Create
-# @csrf_exempt
-# @api_view(['GET', 'POST'])
-# def task_list_create(request):
-#     if request.method == 'GET':
-#         tasks = Task.objects.all()
-#         serializer = TaskSerializer(tasks, many=True)
-#         return Response(serializer.data)
-
-#     elif request.method == 'POST':
-#         serializer = TaskSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# # Task CRUD - Retrieve, Update, Delete
-# @csrf_exempt
-# @api_view(['GET', 'PUT', 'DELETE'])
-# def task_detail(request, pk):
-#     task = get_object_or_404(Task, pk=pk)
-
-#     if request.method == 'GET':
-#         serializer = TaskSerializer(task)
-#         return Response(serializer.data)
-
-#     elif request.method == 'PUT':
-#         serializer = TaskSerializer(task, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     elif request.method == 'DELETE':
-#         task.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
-# # Custom query: Count tasks per project
-# @csrf_exempt
-# @api_view(['GET'])
-# def project_task_count(request, project_id):
-#     if request.method == "GET":
-#         project = get_object_or_404(Project, id=project_id)
-#         task_count = project.tasks.count()  # Count tasks related to this project
-#         return Response({'project': project.title, 'task_count': task_count})
-
-# Custom query: Get all tasks for a user's project
-@csrf_exempt
-
-def user_project_tasks(request):
-    pass
-
-
 # view main 
 def main(request):
     return render(request,"main.html")
-
-
 #Some Userfull methods
 def generate_username():
     username = ""
